@@ -42,7 +42,7 @@ function crearAutomataMultiplicacion() {
     q5.agregarArco("q3", "*", "*", "L");
 
     q6.agregarArco("q6", "B", "1", "R");
-    q6.agregarArco("q6", "*", "1", "R");
+    q6.agregarArco("q6", "*", "*", "R");
     q6.agregarArco("q6", "1", "1", "R");
     q6.agregarArco("q1", "A", "A", "L");
 

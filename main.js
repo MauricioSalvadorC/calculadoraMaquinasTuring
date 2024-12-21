@@ -58,7 +58,7 @@ function representarOperacion(a, b, op) {
 //   return !isNaN(numero) && Number.isInteger(numero) && numero >= 0;
 // }
 
-ejecutarMaquinaDeTuring(automataSuma, "1+11")
+ejecutarMaquinaDeTuring(automataSuma, "1+11");
 // Función principal de cálculo
 async function calcular() {
   // Limpiar resultados anteriores
@@ -93,17 +93,7 @@ async function calcular() {
       break;
     case "!": {
       // Caso de factorial, solo se usa 'a' ya que factorial es una operación de un solo número
-      let factorial = await ejecutarMaquinaDeTuring(
-        automataFactorial,
-        "1".repeat(a)
-      );
-      setResult(`Factorial: ${factorial}`);
-
-      let Multiplicación = await ejecutarMaquinaDeTuring(
-        automataMultiplicacion,
-        factorial
-      );
-      setResult(`Multiplicación: ${Multiplicación}`);
+      ejecutarOperacion(automataFactorial, "1".repeat(a));
       break;
     }
     default:
@@ -120,7 +110,9 @@ async function ejecutarOperacion(automata, operacion) {
 // Función para realizar la operación compleja
 async function realizarOperacionCompleja(a, b) {
   // Mostrar los resultados de la operación compleja paso a paso
-  setResult(`Iniciando Combinatoria de ${a} y ${b}, a c b = a! / (b! * (a - b)!)`);
+  setResult(
+    `Iniciando Combinatoria de ${a} y ${b}, a c b = a! / (b! * (a - b)!)`
+  );
 
   // Paso 1: Resta
   let resta = await ejecutarMaquinaDeTuring(
@@ -129,21 +121,18 @@ async function realizarOperacionCompleja(a, b) {
   );
 
   // Paso 2: Factorial de la Resta
-  let factorialResta = await ejecutarMaquinaDeTuring(
-    automataMultiplicacion,
-    await ejecutarMaquinaDeTuring(automataFactorial, resta)
-  );
+  let factorialResta = await ejecutarMaquinaDeTuring(automataFactorial, resta);
 
   // Paso 3: Factorial de A
   let factorialA = await ejecutarMaquinaDeTuring(
-    automataMultiplicacion,
-    await ejecutarMaquinaDeTuring(automataFactorial, "1".repeat(a))
+    automataFactorial,
+    "1".repeat(a)
   );
 
   // Paso 4: Factorial de B
   let factorialB = await ejecutarMaquinaDeTuring(
-    automataMultiplicacion,
-    await ejecutarMaquinaDeTuring(automataFactorial, "1".repeat(b))
+    automataFactorial,
+    "1".repeat(b)
   );
 
   // Paso 5: Multiplicación de Factoriales
@@ -153,8 +142,5 @@ async function realizarOperacionCompleja(a, b) {
   );
 
   // Paso 6: División de resultados
-  await ejecutarMaquinaDeTuring(
-    automataDivision,
-    `${factorialA}/${multi}`
-  );
+  await ejecutarMaquinaDeTuring(automataDivision, `${factorialA}/${multi}`);
 }

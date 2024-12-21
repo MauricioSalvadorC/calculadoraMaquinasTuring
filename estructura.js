@@ -100,7 +100,7 @@ function actualizarVisualizacionCinta(cinta, pos, nodoActual) {
     if (i === pos) {
       cintaHTML += `<td class="cinta-actual">${cinta[i]}</td>`;
       flechaHTML += `<td class="flecha">↓</td>`;
-      nodoHTML += `<td class="nodo-actual">${nodoActual.nombre}</td>`;
+      nodoHTML += `<td class="nodo-actual">${nodoActual?.nombre}</td>`;
     } else {
       cintaHTML += `<td>${cinta[i]}</td>`;
       flechaHTML += `<td></td>`;
@@ -140,7 +140,9 @@ async function ejecutarMaquinaDeTuring(automata, cinta, maxPasos = 100000) {
         `Paso ${pasos}: (${nodoActual.nombre}, ${cintaActual}, ${pos}) -> ${arco.esta} -> (${arco.apunta}, ${arco.reemplazo}, ${arco.dir})`
       );
 
-      cintaActual = actualizarCinta(cintaActual, arco, pos);
+      let aux= actualizarCinta(cintaActual, arco, pos);
+      cintaActual= aux[0];
+      pos= aux[1]; 
       pos = moverCabeza(arco, pos);
 
       nodoActual = automata.obtenerNodo(arco.apunta);
@@ -149,7 +151,7 @@ async function ejecutarMaquinaDeTuring(automata, cinta, maxPasos = 100000) {
       await new Promise((resolve) => setTimeout(resolve, velocidadAnimacion));
 
       if (nodoActual?.esFinal) {
-        setResult(`Nodo final alcanzado (${nodoActual.nombre}).`);
+        setResult(`Nodo final alcanzado (${nodoActual.nombre}, ${cintaActual}, ${pos}).`);
         break;
       }
     } else {
@@ -194,7 +196,7 @@ function actualizarCinta(cintaActual, arco, pos) {
     cintaActual = arco.reemplazo + cintaActual;
     pos++;
   }
-  return cintaActual;
+  return [cintaActual, pos];
 }
 
 function moverCabeza(arco, pos) {
